@@ -5,13 +5,13 @@ import Selector from '../Components/Selector/selector';
 import Lights from '../Components/Light/lights';
 import { hoursToString, monthToString } from '../Utils/Utils';
 import LightButton from '../Components/LightButton/LightButton';
-import { getRooms } from '../Utils/hue';
+import { getRooms, setRooms } from '../Utils/hue';
 
 function App() {
   const [time, setTime] = useState(new Date());
   const [lights, setLights] = useState(Lights);
 
-  setInterval(updateLight, 1000);
+  setInterval(updateLight, 2000);
 
   useEffect(() => {
     getLights();
@@ -41,30 +41,13 @@ function App() {
 
   const handleClick = (button) => {
     console.log(button);
-    setLights((prevLights) =>
-      prevLights.map((room) => {
-        if (room.name === button.title) {
-          const newBrightness = room.on ? 255 : 0;
-          return {
-            ...room,
-            on: !room.on,
-            lights: room.lights.map((light) => ({
-              ...light,
-              brightness: newBrightness,
-              on: !room.on,
-            })),
-          };
-        }
-        return room;
-      })
-    );
+    setRooms(button.roomId);
   };
 
   return (
     <div>
-      <p className="title">Wohnung</p>
       <div className="selector-container">
-        <Selector
+        {/* <Selector
           initialIndex={new Date().getHours()}
           maxIndex={23}
           width={45}
@@ -77,7 +60,7 @@ function App() {
           width={80}
           fun={monthToString}
           onValueChange={monthChanged}
-        />
+        /> */}
       </div>
       <div className="view">
         <View time={time} lights={lights} />
