@@ -65,7 +65,7 @@ function DimmNurseryPage() {
   const interval = setInterval(getStatusOfButton, 2000);
 
   const startDimming = async () => {
-    event.preventDefault();
+    //event.preventDefault();
     if (buttonText === 'Start') {
       localStorage.setItem('durationIndex', durationIndex);
       localStorage.setItem('brightnessIndex', brightnessIndex);
@@ -78,8 +78,9 @@ function DimmNurseryPage() {
         current_brightness = parseInt(brightness[brightnessIndex]);
       }
 
-      const current_duration = parseInt(duration[durationIndex]);
-      const lightId = 'ca01113c-2297-405a-8456-15b75678fc28';
+      const current_duration = parseInt(duration[durationIndex]) * 60;
+      const lightId = 'fe6b762c-e6ae-47f9-9303-86ac1d3c135d';
+      //const lightId = 'ca01113c-2297-405a-8456-15b75678fc28';
 
       const response = await dimmLight(
         lightId,
@@ -91,7 +92,7 @@ function DimmNurseryPage() {
       setButtonText('Stop');
     } else {
       setButtonText('Start');
-      const response = await stopAutomation(automationId);
+      await stopAutomation(automationId);
     }
   };
 
@@ -137,7 +138,7 @@ function DimmNurseryPage() {
       <button
         className="buttonStart"
         onClick={startDimming}
-        onTouchStart={startDimming}
+        onTouchCancel={startDimming}
       >
         {buttonText}
       </button>
